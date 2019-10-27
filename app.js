@@ -1,6 +1,6 @@
 const Koa = require('koa');
 const logger = require('koa-logger');
-const router = require('./routers');
+const router = require('./routers/index');
 const Static = require('koa-static');
 const Session = require('koa-session')
 const Body = require('koa-body')
@@ -30,7 +30,8 @@ app.use(Body())
 app.use(Static(join(__dirname, 'public')))
 
 // 注册路由
-app.use(router.routers()).use(router.allowedMethods());
+app.use(router.routes()).use(router.allowedMethods());
+
 
 // 项目启动
 app.listen('3005', ()=> {
