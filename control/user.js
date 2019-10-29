@@ -3,6 +3,7 @@ const encrypt = require('../util/encrypt')
 
 exports.reg = async ctx => {
   const user = ctx.request.body || {};
+  console.log(user,'user')
   const username = user.username;
   const password = user.password;
 
@@ -70,9 +71,10 @@ exports.reg = async ctx => {
 
 exports.login = async ctx => {
   const user = ctx.request.body || {};
-  console.log(user)
   const username = user.username;
   const password = user.password;
+  console.log(user,password)
+
   let resBody = {}
 
   if(!username || !password){
@@ -82,10 +84,21 @@ exports.login = async ctx => {
     }
   }
 
-  await User
+  await new Promise((resolve, reject)=>{
+    User
     .find({username}, (err, data) => {
-      if(err) return err
+      console.log(data)
+      if(err) return reject(err)
 
+      if(data.length <= 0) {
+        return resolve('')
+      }
+      resolve(data)
+
+    })
+  })
+  .then(async res => {
+    if(res){
       let cryptPassword = encrypt(password)
       console.log(cryptPassword,data[0].password)
       if(cryptPassword === data[0].password){
@@ -99,7 +112,16 @@ exports.login = async ctx => {
           msg: '账号或密码错误'
         }
       }
-      console.log(cryptPassword === data.password)
       ctx.body = resBody
-    })
+    }else{
+      ctx.body = {state: 0, msg: '账号暂未注册'}
+    }
+  })
+  .catch(err => {
+    console.log(err);
+    ctx.body = {
+      state: 0,
+      msg: '登录失败，请重新登录'
+    }
+  })
 }
