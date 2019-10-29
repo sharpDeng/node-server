@@ -70,6 +70,7 @@ exports.reg = async ctx => {
 
 exports.login = async ctx => {
   const user = ctx.request.body || {};
+  console.log(user)
   const username = user.username;
   const password = user.password;
   let resBody = {}
