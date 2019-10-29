@@ -34,6 +34,6 @@ app.use(router.routes()).use(router.allowedMethods());
 
 
 // 项目启动
-app.listen('3005', ()=> {
+app.listen('3005', '0.0.0.0', ()=> {
   console.log('项目启动成功')
 })
