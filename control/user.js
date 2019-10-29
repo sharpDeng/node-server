@@ -101,7 +101,7 @@ exports.login = async ctx => {
     if(res){
       let cryptPassword = encrypt(password)
       console.log(cryptPassword,res[0].password)
-      if(cryptPassword === data[0].password){
+      if(cryptPassword === res[0].password){
         resBody = {
           state: 1,
           msg: '登录成功'
@@ -122,7 +122,7 @@ exports.login = async ctx => {
     ctx.body = {
       state: 0,
       msg: '登录失败，请重新登录',
-      err: err
+      err: err.toString()
     }
   })
 }
